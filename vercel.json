@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "name": "vanessa-perez-events",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "REACT_APP_EMAILJS_SERVICE_ID": "@emailjs_service_id",
+    "REACT_APP_EMAILJS_TEMPLATE_ID": "@emailjs_template_id",
+    "REACT_APP_EMAILJS_PUBLIC_KEY": "@emailjs_public_key",
+    "REACT_APP_GA_MEASUREMENT_ID": "@ga_measurement_id"
+  }
+}
