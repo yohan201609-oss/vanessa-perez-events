@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 const OptimizedImage = ({
   src,
@@ -25,7 +25,7 @@ const OptimizedImage = ({
     }
   }, [onError]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (src && src !== placeholder) {
       const img = new Image();
       img.onload = () => {
@@ -35,7 +35,7 @@ const OptimizedImage = ({
       img.onerror = handleImageError;
       img.src = src;
     }
-  }, [src, placeholder, handleImageError]);
+  }, [src, placeholder, handleImageError, handleImageLoad]);
 
   return (
     <div className={`image-container ${className}`} style={style}>
