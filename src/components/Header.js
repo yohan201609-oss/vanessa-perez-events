@@ -32,8 +32,11 @@ const Header = () => {
       <div className="container">
         <div className="header-content">
           <div className="logo">
-            <h2>Vanessa Perez</h2>
-            <span>Event Planner</span>
+            <img 
+              src="/images/logo-vanessa-perez.svg" 
+              alt="Vanessa Pérez - Event Planner" 
+              className="logo-image"
+            />
           </div>
           
           <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>

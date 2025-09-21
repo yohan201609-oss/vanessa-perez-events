@@ -1,0 +1,22 @@
+<svg width="300" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Large stylized "V" at the top -->
+  <g transform="translate(135, 15)">
+    <!-- Left stroke of V -->
+    <path d="M 0 0 L 5 40" stroke="#333333" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <!-- Right stroke of V -->
+    <path d="M 30 0 L 25 40" stroke="#333333" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  </g>
+  
+  <!-- Vanessa Pérez name in elegant script -->
+  <text x="150" y="75" font-family="Georgia, serif" font-size="22" font-weight="400" text-anchor="middle" fill="#000000">
+    Vanessa Pérez
+  </text>
+  
+  <!-- Inverted triangle -->
+  <polygon points="140,90 160,90 150,105" fill="#000000"/>
+  
+  <!-- EVENT'S PLANNER text -->
+  <text x="150" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#000000" letter-spacing="1.5px">
+    EVENT'S PLANNER
+  </text>
+</svg>

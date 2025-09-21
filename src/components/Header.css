@@ -22,10 +22,22 @@
   padding: 1rem 0;
 }
 
+.logo-image {
+  height: 60px;
+  width: auto;
+  max-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+/* Legacy styles for text logo (kept for fallback) */
 .logo h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
-  color: var(--primary-gold);
+  color: black;
   margin: 0;
   font-weight: 600;
 }
@@ -119,6 +131,11 @@
 
   .header-actions {
     display: none;
+  }
+
+  .logo-image {
+    height: 45px;
+    max-width: 150px;
   }
 
   .logo h2 {
