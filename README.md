@@ -1,202 +1,374 @@
-# 🎉 Vanessa Perez - Event Planner Website
+# Vanessa Perez Event Planner - Next.js 14
 
-Una página web profesional y moderna para el negocio de eventos de Vanessa Perez, diseñada para promocionar servicios y facilitar el contacto con clientes potenciales.
+Sitio web profesional de planificación de eventos migrado a Next.js 14 con App Router.
 
-![Vanessa Perez Events](https://img.shields.io/badge/React-18-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
+## 🚀 Características
 
-## 🎯 Características Principales
+- ✅ **Next.js 14** con App Router
+- ✅ **TypeScript**: No (JavaScript puro)
+- ✅ **CSS Modules** para estilos modulares
+- ✅ **Framer Motion** para animaciones suaves
+- ✅ **Google Analytics** integrado
+- ✅ **EmailJS** para formularios de contacto
+- ✅ **Optimización de imágenes** con next/image
+- ✅ **SEO optimizado** con metadata completa
+- ✅ **Responsive design** completo
+- ✅ **WhatsApp** flotante con opciones rápidas
 
-### ✨ Diseño Moderno y Elegante
-- 🎨 Diseño limpio con colores dorados que reflejan elegancia y energía
-- 📝 Tipografías elegantes (Playfair Display + Inter)
-- 🎬 Animaciones suaves con Framer Motion
-- 📱 Totalmente responsive para todos los dispositivos
-- 🖼️ Imágenes optimizadas con lazy loading
+## 📋 Requisitos Previos
 
-### 🎉 Catálogo de Servicios
-- 💒 **Bodas**: Decoración elegante y coordinación completa
-- 🎂 **Cumpleaños**: Infantiles, adolescentes y adultos
-- 🏢 **Eventos Corporativos**: Reuniones, conferencias y galas
-- 🎓 **Graduaciones**: Celebración de logros académicos
-- 👶 **Baby Showers**: Tradicionales y modernos
-- ⭐ **Eventos Especiales**: Diseño personalizado
-
-### 📸 Galería/Portafolio
-- 🔍 Filtros por categoría de evento
-- 🖼️ Modal con navegación entre imágenes
-- 📹 Soporte para fotos y videos
-- 📱 Diseño tipo masonry responsive
-- ⚡ Carga optimizada con lazy loading
-
-### 📝 Formulario Inteligente
-- 📋 **Paso 1**: Información personal (nombre, email, teléfono)
-- 📅 **Paso 2**: Detalles del evento (tipo, fecha, invitados)
-- 💰 **Paso 3**: Presupuesto y mensaje adicional
-- ✅ **Paso 4**: Resumen y confirmación
-- 📧 Integración con EmailJS para envío real de emails
-- 📊 Tracking de Google Analytics
-
-### 💬 Integración Social
-- 💬 Botón flotante de WhatsApp con opciones rápidas
-- 📸 Enlaces directos a Instagram
-- 📞 Botones de contacto inmediato
-- 💌 Mensajes predefinidos para facilitar la comunicación
-
-### ⭐ Testimonios
-- 🗣️ Carrusel de testimonios de clientes
-- ⭐ Sistema de calificaciones con estrellas
-- 📱 Navegación táctil para móviles
-- 🎬 Animaciones suaves entre testimonios
-
-## 🚀 Instalación y Configuración
-
-### Prerrequisitos
-- Node.js (versión 14 o superior)
+- Node.js 18.0 o superior
 - npm o yarn
 
-### Instalación
+## 🛠️ Instalación
+
+### 1. Clonar el repositorio
+
 ```bash
-# Clonar el repositorio
 git clone https://github.com/tu-usuario/vanessa-perez-events.git
 cd vanessa-perez-events
+```
 
-# Instalar dependencias
+### 2. Instalar dependencias
+
+```bash
 npm install
+```
 
-# Copiar archivo de configuración
-cp env.example .env
+### 3. Configurar variables de entorno
 
-# Iniciar el servidor de desarrollo
+Crea un archivo `.env.local` en la raíz del proyecto:
+
+```bash
+cp env.example .env.local
+```
+
+Edita `.env.local` con tus valores reales:
+
+```env
+# EmailJS Configuration (Servidor - no exponer al cliente)
+EMAILJS_SERVICE_ID=tu_service_id
+EMAILJS_TEMPLATE_ID=tu_template_id
+EMAILJS_PUBLIC_KEY=tu_public_key
+
+# Google Analytics (Público)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Social Media Links (Público)
+NEXT_PUBLIC_WHATSAPP_NUMBER=1234567890
+NEXT_PUBLIC_INSTAGRAM_USERNAME=vanessaperez_events
+NEXT_PUBLIC_EMAIL=info@vanessaperez.com
+
+# App Configuration (Opcional)
+NEXT_PUBLIC_PHONE=+1 (555) 123-4567
+NEXT_PUBLIC_LOCATION=Ciudad, Estado, País
+NEXT_PUBLIC_WEBSITE_URL=https://vanessaperez-events.com
+```
+
+## 🎯 Uso
+
+### Desarrollo
+
+```bash
+npm run dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+### Producción
+
+```bash
+# Construir la aplicación
+npm run build
+
+# Iniciar servidor de producción
 npm start
 ```
 
-### Configuración de Variables de Entorno
-Copia el archivo `env.example` a `.env` y configura las siguientes variables:
+### Linting
 
 ```bash
-# EmailJS Configuration
-REACT_APP_EMAILJS_SERVICE_ID=tu_service_id
-REACT_APP_EMAILJS_TEMPLATE_ID=tu_template_id
-REACT_APP_EMAILJS_PUBLIC_KEY=tu_public_key
-
-# Google Analytics
-REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-
-# Social Media Links
-REACT_APP_WHATSAPP_NUMBER=1234567890
-REACT_APP_INSTAGRAM_USERNAME=vanessaperez_events
-REACT_APP_EMAIL=info@vanessaperez.com
+npm run lint
 ```
 
-### Configuración de EmailJS
-Para habilitar el envío de emails:
+## 📁 Estructura del Proyecto
 
-1. Crea una cuenta en [EmailJS](https://www.emailjs.com/)
-2. Configura tu servicio de email (Gmail, Outlook, etc.)
-3. Crea un template para el formulario
-4. Actualiza las variables en tu archivo `.env`
-
-### Configuración de Google Analytics
-Para habilitar el tracking:
-
-1. Crea una cuenta en [Google Analytics](https://analytics.google.com/)
-2. Crea una nueva propiedad GA4
-3. Copia tu Measurement ID
-4. Actualiza `REACT_APP_GA_MEASUREMENT_ID` en tu archivo `.env`
-
-### Personalización
-- **Configuración centralizada**: Edita `src/config/socialLinks.js` para cambiar todos los enlaces
-- **Imágenes**: Reemplaza las URLs en `src/config/images.js` con tus fotos reales
-- **Colores**: Modifica las variables CSS en `src/index.css`
-- **Contenido**: Actualiza textos en cada componente según tus necesidades
-
-## 📱 Características Técnicas
-
-### Tecnologías Utilizadas
-- ⚛️ **React 18**: Framework principal
-- 🧭 **React Router**: Navegación
-- 🎬 **Framer Motion**: Animaciones
-- 🎨 **React Icons**: Iconografía
-- 📧 **EmailJS**: Envío de emails
-- 📊 **Google Analytics**: Tracking de usuarios
-- 🖼️ **Optimized Images**: Lazy loading y manejo de errores
-- 🎨 **CSS3**: Estilos personalizados
-
-### Estructura del Proyecto
 ```
-src/
+vanessa-perez-events/
+├── app/
+│   ├── api/
+│   │   └── send-email/
+│   │       └── route.js          # API route para EmailJS
+│   ├── layout.js                  # Layout principal con metadata
+│   ├── page.js                    # Página principal (home)
+│   └── globals.css                # Estilos globales
 ├── components/
-│   ├── Header.js & Header.css
-│   ├── Hero.js & Hero.css
-│   ├── Services.js & Services.css
-│   ├── Gallery.js & Gallery.css
-│   ├── Testimonials.js & Testimonials.css
-│   ├── Contact.js & Contact.css
-│   ├── Footer.js & Footer.css
-│   ├── WhatsAppButton.js & WhatsAppButton.css
-│   └── OptimizedImage.js & OptimizedImage.css
+│   ├── Header/
+│   │   ├── Header.js
+│   │   └── Header.module.css
+│   ├── Hero/
+│   │   ├── Hero.js
+│   │   └── Hero.module.css
+│   ├── Services/
+│   │   ├── Services.js
+│   │   └── Services.module.css
+│   ├── Gallery/
+│   │   ├── Gallery.js
+│   │   └── Gallery.module.css
+│   ├── Testimonials/
+│   │   ├── Testimonials.js
+│   │   └── Testimonials.module.css
+│   ├── Contact/
+│   │   ├── Contact.js
+│   │   └── Contact.module.css
+│   ├── Footer/
+│   │   ├── Footer.js
+│   │   └── Footer.module.css
+│   ├── WhatsAppButton/
+│   │   ├── WhatsAppButton.js
+│   │   └── WhatsAppButton.module.css
+│   └── OptimizedImage/
+│       ├── OptimizedImage.js
+│       └── OptimizedImage.module.css
 ├── config/
-│   ├── socialLinks.js
-│   └── images.js
+│   ├── socialLinks.js             # Configuración de redes sociales
+│   └── images.js                  # Configuración de imágenes
 ├── utils/
-│   └── analytics.js
-├── App.js & App.css
-├── index.js & index.css
+│   └── analytics.js               # Utilidades de Google Analytics
+├── public/
+│   └── images/                    # Imágenes estáticas
+│       └── events/                # Imágenes de eventos
+├── next.config.js                 # Configuración de Next.js
+├── jsconfig.json                  # Configuración de alias (@/*)
+├── package.json
 └── README.md
 ```
 
-### Responsive Design
-- Mobile First approach
-- Breakpoints: 768px, 480px
-- Grid layouts adaptativos
-- Navegación móvil optimizada
+## 🎨 Componentes Principales
 
-## 🎨 Paleta de Colores
-- **Dorado Principal**: #d4af37
-- **Dorado Secundario**: #f4e4bc
-- **Texto Oscuro**: #333
-- **Texto Claro**: #666
-- **Fondo Claro**: #fafafa
-- **Blanco**: #ffffff
+### Header
+- Navegación fija con scroll
+- Menú móvil responsive
+- Logo optimizado con next/image
 
-## 📞 Información de Contacto
-- **Email**: info@vanessaperez.com
-- **Teléfono**: +1 (555) 123-4567
-- **Instagram**: @vanessaperez_events
-- **WhatsApp**: +1 (555) 123-4567
+### Hero
+- Sección principal con animaciones
+- Estadísticas destacadas
+- Enlaces a redes sociales
 
-## 🚀 Despliegue
-Para desplegar en producción:
+### Services
+- Grid de servicios interactivos
+- Detalles expandibles
+- Imágenes optimizadas
 
-```bash
-# Crear build de producción
-npm run build
+### Gallery
+- Filtros por categoría
+- Modal de imágenes
+- Soporte para swipe en móvil
 
-# Los archivos estáticos estarán en la carpeta 'build'
+### Testimonials
+- Carrusel automático
+- Navegación manual
+- Calificaciones con estrellas
+
+### Contact
+- Formulario multi-paso (4 pasos)
+- Validación completa
+- Integración con EmailJS
+
+### WhatsAppButton
+- Botón flotante
+- Opciones rápidas expandibles
+- Tracking de analytics
+
+## 🔧 Configuración
+
+### EmailJS
+
+1. Crea una cuenta en [EmailJS](https://www.emailjs.com/)
+2. Configura tu servicio de email (Gmail, Outlook, etc.)
+3. Crea un template para el formulario de contacto
+4. Actualiza las variables en `.env.local`:
+   - `EMAILJS_SERVICE_ID`
+   - `EMAILJS_TEMPLATE_ID`
+   - `EMAILJS_PUBLIC_KEY`
+
+**Template Variables del Formulario:**
+- `from_name`: Nombre del cliente
+- `from_email`: Email del cliente
+- `phone`: Teléfono
+- `event_type`: Tipo de evento
+- `event_date`: Fecha del evento
+- `guest_count`: Número de invitados
+- `budget`: Presupuesto
+- `message`: Mensaje adicional
+- `register`: Registro para ofertas
+- `to_name`: Vanessa Pérez
+
+### Google Analytics
+
+1. Crea una propiedad en [Google Analytics](https://analytics.google.com/)
+2. Obtén tu Measurement ID (formato: `G-XXXXXXXXXX`)
+3. Actualiza `NEXT_PUBLIC_GA_MEASUREMENT_ID` en `.env.local`
+
+### Redes Sociales
+
+Actualiza las variables en `.env.local` o edita `config/socialLinks.js`:
+
+- `NEXT_PUBLIC_WHATSAPP_NUMBER`: Número sin +, espacios o guiones
+- `NEXT_PUBLIC_INSTAGRAM_USERNAME`: Usuario de Instagram
+- `NEXT_PUBLIC_EMAIL`: Email de contacto
+
+## 🖼️ Imágenes
+
+### Imágenes Locales
+
+Coloca las imágenes en `public/images/`:
+- Logo: `public/images/logo-vanessa-perez.svg`
+- Eventos: `public/images/events/*.jpg`
+
+### Imágenes Externas
+
+Las URLs externas (como Unsplash) funcionan directamente. Agrega dominios adicionales en `next.config.js`:
+
+```javascript
+images: {
+  domains: ['images.unsplash.com', 'tu-dominio.com'],
+}
 ```
 
-### Plataformas Recomendadas
-- **Netlify**: Fácil despliegue con drag & drop
-- **Vercel**: Integración perfecta con React
-- **GitHub Pages**: Gratuito para proyectos públicos
+### Optimización
 
-## 📝 Próximas Mejoras
-- [ ] Integración con CMS para gestión de contenido
-- [ ] Sistema de reservas online
-- [ ] Chat en vivo
-- [ ] Blog de eventos
-- [ ] Calculadora de presupuestos
-- [ ] Integración con calendario
-- [ ] Sistema de pagos online
-- [ ] Múltiples idiomas
-- [ ] PWA (Progressive Web App)
+- Las imágenes locales usan `next/image` automáticamente
+- Formatos WebP y AVIF se generan automáticamente
+- Lazy loading habilitado por defecto
 
-## 🤝 Contribuciones
-Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para sugerir mejoras.
+## 📱 Responsive Design
+
+El sitio está completamente optimizado para:
+- 📱 **Mobile** (320px - 768px)
+- 📱 **Tablet** (768px - 1024px)
+- 💻 **Desktop** (1024px+)
+
+## 🎭 Animaciones
+
+Todas las animaciones usan **Framer Motion**:
+- Entrada de componentes al hacer scroll
+- Transiciones suaves
+- Carrusel de testimonios
+- Modal de galería
+
+## 🔍 SEO
+
+### Metadata Implementada
+
+- ✅ Título y descripción optimizados
+- ✅ Open Graph para redes sociales
+- ✅ Twitter Cards
+- ✅ Keywords relevantes
+- ✅ Canonical URLs
+- ✅ Robots meta tags
+
+### Mejoras Adicionales
+
+- Imágenes con alt text descriptivo
+- Estructura semántica HTML5
+- URLs limpias
+- Sitemap (puede agregarse)
+
+## 🚀 Despliegue
+
+### Vercel (Recomendado)
+
+1. Conecta tu repositorio a [Vercel](https://vercel.com)
+2. Agrega las variables de entorno en el dashboard
+3. Vercel detectará Next.js automáticamente
+
+### Netlify
+
+1. Conecta tu repositorio a [Netlify](https://netlify.com)
+2. Configura:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+3. Agrega las variables de entorno
+
+### Otros Servicios
+
+Cualquier servicio que soporte Node.js puede ejecutar Next.js:
+- AWS Amplify
+- DigitalOcean App Platform
+- Railway
+- Render
+
+## 🐛 Troubleshooting
+
+### Error: "Module not found"
+
+```bash
+# Limpia node_modules y reinstala
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Imágenes no cargan
+
+1. Verifica que las imágenes estén en `public/images/`
+2. Para URLs externas, agrega el dominio en `next.config.js`
+3. Verifica que las rutas sean correctas (empiezan con `/`)
+
+### EmailJS no funciona
+
+1. Verifica que las variables de entorno estén en `.env.local`
+2. Asegúrate de que las credenciales sean correctas
+3. Revisa la consola del servidor para errores
+4. Verifica que el template de EmailJS tenga las variables correctas
+
+### Google Analytics no carga
+
+1. Verifica `NEXT_PUBLIC_GA_MEASUREMENT_ID` en `.env.local`
+2. Asegúrate de que el ID tenga el formato `G-XXXXXXXXXX`
+3. Revisa la consola del navegador para errores
+
+### Build falla
+
+```bash
+# Limpia el caché de Next.js
+rm -rf .next
+npm run build
+```
+
+## 📝 Scripts Disponibles
+
+- `npm run dev` - Inicia servidor de desarrollo
+- `npm run build` - Construye para producción
+- `npm start` - Inicia servidor de producción
+- `npm run lint` - Ejecuta ESLint
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ## 📄 Licencia
-Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detalles.
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## 👤 Autor
+
+**Vanessa Perez**
+- Website: [vanessaperez-events.com](https://vanessaperez-events.com)
+- Email: info@vanessaperez.com
+
+## 🙏 Agradecimientos
+
+- [Next.js](https://nextjs.org/) - Framework React
+- [Framer Motion](https://www.framer.com/motion/) - Animaciones
+- [React Icons](https://react-icons.github.io/react-icons/) - Iconos
+- [EmailJS](https://www.emailjs.com/) - Servicio de emails
 
 ---
 
-**Desarrollado con ❤️ para Vanessa Perez Event Planner**
+Hecho con ❤️ para crear momentos únicos

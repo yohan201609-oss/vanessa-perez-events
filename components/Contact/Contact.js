@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaWhatsapp, FaInstagram } from 'react-icons/fa';
-import emailjs from 'emailjs-com';
-import analytics from '../utils/analytics';
-import { getInstagramUrl, getWhatsAppUrl, socialLinks } from '../config/socialLinks';
-import './Contact.css';
+import analytics from '@/utils/analytics';
+import { getInstagramUrl, getWhatsAppUrl, socialLinks } from '@/config/socialLinks';
+import styles from './Contact.module.css';
 
 const Contact = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -69,11 +70,6 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Configuración de EmailJS (necesitarás reemplazar con tus credenciales reales)
-      const serviceId = 'service_vanessa_perez';
-      const templateId = 'template_contact_form';
-      const publicKey = 'your_public_key_here';
-
       // Preparar los datos del template
       const templateParams = {
         from_name: formData.name,
@@ -88,8 +84,23 @@ const Contact = () => {
         to_name: 'Vanessa Pérez'
       };
 
-      // Enviar email usando EmailJS
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      // Enviar email usando la API route de Next.js
+      // Las credenciales se manejan en el servidor
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          templateParams
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Error al enviar el email');
+      }
       
       // Track successful form submission
       analytics.trackFormSubmission('contact_form', {
@@ -124,9 +135,9 @@ const Contact = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="step-content">
+          <div className={styles.stepContent}>
             <h3>Información Personal</h3>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Nombre completo *</label>
               <input
                 type="text"
@@ -137,7 +148,7 @@ const Contact = () => {
                 placeholder="Tu nombre completo"
               />
             </div>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Correo electrónico *</label>
               <input
                 type="email"
@@ -148,7 +159,7 @@ const Contact = () => {
                 placeholder="tu@email.com"
               />
             </div>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Teléfono</label>
               <input
                 type="tel"
@@ -163,9 +174,9 @@ const Contact = () => {
 
       case 2:
         return (
-          <div className="step-content">
+          <div className={styles.stepContent}>
             <h3>Detalles del Evento</h3>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Tipo de evento *</label>
               <select
                 name="eventType"
@@ -179,7 +190,7 @@ const Contact = () => {
                 ))}
               </select>
             </div>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Fecha del evento *</label>
               <input
                 type="date"
@@ -189,7 +200,7 @@ const Contact = () => {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Número de invitados *</label>
               <input
                 type="number"
@@ -206,9 +217,9 @@ const Contact = () => {
 
       case 3:
         return (
-          <div className="step-content">
+          <div className={styles.stepContent}>
             <h3>Presupuesto y Detalles</h3>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Presupuesto estimado *</label>
               <select
                 name="budget"
@@ -222,7 +233,7 @@ const Contact = () => {
                 ))}
               </select>
             </div>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label>Mensaje adicional</label>
               <textarea
                 name="message"
@@ -232,15 +243,15 @@ const Contact = () => {
                 rows="4"
               />
             </div>
-            <div className="form-group checkbox-group">
-              <label className="checkbox-label">
+            <div className={`${styles.formGroup} ${styles.checkboxGroup}`}>
+              <label className={styles.checkboxLabel}>
                 <input
                   type="checkbox"
                   name="register"
                   checked={formData.register}
                   onChange={handleInputChange}
                 />
-                <span className="checkmark"></span>
+                <span className={styles.checkmark}></span>
                 Quiero registrarme para recibir ofertas especiales y novedades
               </label>
             </div>
@@ -249,32 +260,32 @@ const Contact = () => {
 
       case 4:
         return (
-          <div className="step-content">
+          <div className={styles.stepContent}>
             <h3>Resumen de tu Solicitud</h3>
-            <div className="summary">
-              <div className="summary-item">
+            <div className={styles.summary}>
+              <div className={styles.summaryItem}>
                 <strong>Nombre:</strong> {formData.name}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Email:</strong> {formData.email}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Teléfono:</strong> {formData.phone || 'No proporcionado'}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Tipo de evento:</strong> {formData.eventType}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Fecha:</strong> {formData.eventDate}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Invitados:</strong> {formData.guestCount}
               </div>
-              <div className="summary-item">
+              <div className={styles.summaryItem}>
                 <strong>Presupuesto:</strong> {formData.budget}
               </div>
               {formData.message && (
-                <div className="summary-item">
+                <div className={styles.summaryItem}>
                   <strong>Mensaje:</strong> {formData.message}
                 </div>
               )}
@@ -289,15 +300,15 @@ const Contact = () => {
 
   if (submitStatus === 'success') {
     return (
-      <section id="contacto" className="contact section">
+      <section id="contacto" className={`${styles.contact} section`}>
         <div className="container">
           <motion.div 
-            className="success-message"
+            className={styles.successMessage}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="success-icon">✓</div>
+            <div className={styles.successIcon}>✓</div>
             <h2>¡Solicitud Enviada!</h2>
             <p>Gracias por contactarnos. Nos pondremos en contacto contigo en las próximas 24 horas.</p>
             <button 
@@ -313,7 +324,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contacto" className="contact section">
+    <section id="contacto" className={`${styles.contact} section`}>
       <div className="container">
         <motion.div 
           className="section-header text-center"
@@ -328,34 +339,34 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="contact-content">
+        <div className={styles.contactContent}>
           <motion.div 
-            className="contact-form"
+            className={styles.contactForm}
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
             <form onSubmit={handleSubmit}>
-              <div className="form-header">
-                <div className="step-indicator">
+              <div className={styles.formHeader}>
+                <div className={styles.stepIndicator}>
                   {[1, 2, 3, 4].map(step => (
                     <div 
                       key={step} 
-                      className={`step ${currentStep >= step ? 'active' : ''}`}
+                      className={`${styles.step} ${currentStep >= step ? styles.active : ''}`}
                     >
                       {step}
                     </div>
                   ))}
                 </div>
-                <div className="step-title">
+                <div className={styles.stepTitle}>
                   Paso {currentStep} de 4
                 </div>
               </div>
 
               {renderStep()}
 
-              <div className="form-actions">
+              <div className={styles.formActions}>
                 {currentStep > 1 && (
                   <button 
                     type="button" 
@@ -388,7 +399,7 @@ const Contact = () => {
           </motion.div>
 
           <motion.div 
-            className="contact-info"
+            className={styles.contactInfo}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -396,33 +407,33 @@ const Contact = () => {
           >
             <h3>Información de Contacto</h3>
             
-            <div className="info-item">
-              <FaEnvelope className="info-icon" />
+            <div className={styles.infoItem}>
+              <FaEnvelope className={styles.infoIcon} />
               <div>
                 <h4>Email</h4>
                 <p>{socialLinks.email}</p>
               </div>
             </div>
 
-            <div className="info-item">
-              <FaPhone className="info-icon" />
+            <div className={styles.infoItem}>
+              <FaPhone className={styles.infoIcon} />
               <div>
                 <h4>Teléfono</h4>
                 <p>+1 (555) 123-4567</p>
               </div>
             </div>
 
-            <div className="info-item">
-              <FaMapMarkerAlt className="info-icon" />
+            <div className={styles.infoItem}>
+              <FaMapMarkerAlt className={styles.infoIcon} />
               <div>
                 <h4>Ubicación</h4>
                 <p>Ciudad, Estado, País</p>
               </div>
             </div>
 
-            <div className="social-contact">
+            <div className={styles.socialContact}>
               <h4>Síguenos</h4>
-              <div className="social-links">
+              <div className={styles.socialLinks}>
                 <a href={getInstagramUrl()} target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram">
                   <FaInstagram />
                   Instagram
@@ -434,7 +445,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="quick-contact">
+            <div className={styles.quickContact}>
               <h4>¿Necesitas una respuesta rápida?</h4>
               <p>Contáctanos directamente por WhatsApp para una respuesta inmediata.</p>
               <a 
@@ -455,3 +466,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

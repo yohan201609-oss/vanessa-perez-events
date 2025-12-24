@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { FaHeart, FaBriefcase, FaGraduationCap, FaBaby, FaCalendarAlt } from 'react-icons/fa';
-import { images } from '../config/images';
-import './Services.css';
+import { images } from '@/config/images';
+import styles from './Services.module.css';
 
 const Services = () => {
   const [activeService, setActiveService] = useState(0);
@@ -81,7 +84,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="servicios" className="services section">
+    <section id="servicios" className={`${styles.services} section`}>
       <div className="container">
         <motion.div 
           className="section-header text-center"
@@ -96,48 +99,62 @@ const Services = () => {
           </p>
         </motion.div>
 
-        <div className="services-grid">
+        <div className={styles.servicesGrid}>
           {services.map((service, index) => (
             <motion.div
               key={service.id}
-              className={`service-card ${activeService === index ? 'active' : ''}`}
+              className={`${styles.serviceCard} ${activeService === index ? styles.active : ''}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
               onClick={() => setActiveService(index)}
             >
-              <div className="service-icon">
+              <div className={styles.serviceIcon}>
                 <service.icon />
               </div>
-              <h3 className="service-title">{service.title}</h3>
-              <p className="service-description">{service.description}</p>
-              <div className="service-image">
-                <img src={service.image} alt={service.title} />
+              <h3 className={styles.serviceTitle}>{service.title}</h3>
+              <p className={styles.serviceDescription}>{service.description}</p>
+              <div className={styles.serviceImage}>
+                {service.image.startsWith('http') ? (
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    loading="lazy"
+                  />
+                ) : (
+                  <Image 
+                    src={service.image} 
+                    alt={service.title}
+                    width={400}
+                    height={150}
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
               </div>
             </motion.div>
           ))}
         </div>
 
         <motion.div 
-          className="service-details"
+          className={styles.serviceDetails}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <div className="service-features">
+          <div className={styles.serviceFeatures}>
             <h3>Lo que incluye nuestro servicio de {services[activeService].title}</h3>
-            <div className="features-grid">
+            <div className={styles.featuresGrid}>
               {services[activeService].features.map((feature, index) => (
-                <div key={index} className="feature-item">
-                  <div className="feature-icon">✓</div>
-                  <span className="feature-text">{feature}</span>
+                <div key={index} className={styles.featureItem}>
+                  <div className={styles.featureIcon}>✓</div>
+                  <span className={styles.featureText}>{feature}</span>
                 </div>
               ))}
             </div>
-            <div className="service-cta">
-              <p className="cta-text">¿Interesado en nuestros servicios de {services[activeService].title.toLowerCase()}?</p>
+            <div className={styles.serviceCta}>
+              <p className={styles.ctaText}>¿Interesado en nuestros servicios de {services[activeService].title.toLowerCase()}?</p>
               <button 
                 className="btn btn-primary"
                 onClick={() => {
@@ -158,3 +175,4 @@ const Services = () => {
 };
 
 export default Services;
+

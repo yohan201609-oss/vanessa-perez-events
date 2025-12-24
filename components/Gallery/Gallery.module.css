@@ -1,0 +1,275 @@
+.gallery {
+  background: white;
+}
+
+.galleryFilters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  padding: 12px 24px;
+  border: 2px solid var(--primary-gold);
+  background: transparent;
+  color: var(--primary-gold);
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.filterBtn:hover {
+  background: var(--primary-gold);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.filterBtn.active {
+  background: var(--primary-gold);
+  color: white;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.galleryItem {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.galleryItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.galleryImage {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.galleryImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.galleryItem:hover .galleryImage img {
+  transform: scale(1.05);
+}
+
+.playOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.galleryItem:hover .playOverlay {
+  background: var(--primary-gold);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.galleryContent {
+  padding: 1.5rem;
+}
+
+.galleryTitle {
+  font-size: 1.3rem;
+  color: var(--dark-text);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.galleryDescription {
+  color: var(--light-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.galleryModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 900px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.modalClose:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modalImage {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
+
+.modalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.videoOverlay:hover {
+  background: var(--primary-gold);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.modalInfo {
+  padding: 2rem;
+  text-align: center;
+}
+
+.modalInfo h3 {
+  font-size: 1.8rem;
+  color: var(--dark-text);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.modalInfo p {
+  color: var(--light-text);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.swipeIndicator {
+  text-align: center;
+  margin-top: 15px;
+  opacity: 0.7;
+  font-size: 0.9rem;
+  color: var(--light-text);
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .swipeIndicator {
+    display: block;
+  }
+  
+  .galleryFilters {
+    gap: 0.5rem;
+  }
+
+  .filterBtn {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    min-height: 44px;
+  }
+
+  .galleryGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .galleryImage {
+    height: 200px;
+  }
+
+  .galleryModal {
+    padding: 1rem;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+    touch-action: pan-y;
+  }
+
+  .modalImage {
+    height: 300px;
+  }
+
+  .modalInfo {
+    padding: 1.5rem;
+  }
+
+  .modalInfo h3 {
+    font-size: 1.5rem;
+  }
+
+  .modalInfo p {
+    font-size: 1rem;
+  }
+}
+
