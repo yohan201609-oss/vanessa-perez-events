@@ -1,6 +1,8 @@
 [build]
   # Command to build Next.js app
   command = "npm run build"
+  # Next.js genera el build en .next, no en build
+  publish = ".next"
 
 # Next.js plugin - maneja automáticamente el build y deploy
 [[plugins]]
