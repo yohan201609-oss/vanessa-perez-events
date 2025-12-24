@@ -33,10 +33,39 @@ export default function GaleriaEditor() {
   const loadGaleria = async () => {
     try {
       const { contentStorage } = await import('@/lib/storage');
-      const data = await contentStorage.getGaleria();
-      setGaleria(data);
+      const { getAllGalleryImages } = await import('@/config/images');
+      
+      // Verificar si hay algo guardado en localStorage
+      let data = await contentStorage.getGaleria();
+      
+      // Si localStorage está vacío (primera vez), inicializar con imágenes por defecto
+      if (!data || data.length === 0) {
+        // Verificar si realmente está vacío en localStorage (no solo undefined)
+        if (typeof window !== 'undefined') {
+          const stored = localStorage.getItem('content:galeria');
+          if (!stored) {
+            // Primera vez, cargar imágenes por defecto pero NO guardarlas aún
+            // Se guardarán cuando el usuario haga su primer cambio
+            const defaultImages = getAllGalleryImages();
+            setGaleria(defaultImages);
+            setLoading(false);
+            return;
+          }
+        }
+        setGaleria([]);
+      } else {
+        setGaleria(data);
+      }
     } catch (error) {
       console.error('Error loading galeria:', error);
+      // En caso de error, intentar cargar imágenes por defecto
+      try {
+        const { getAllGalleryImages } = await import('@/config/images');
+        const defaultImages = getAllGalleryImages();
+        setGaleria(defaultImages);
+      } catch (e) {
+        setGaleria([]);
+      }
     } finally {
       setLoading(false);
     }
@@ -55,7 +84,7 @@ export default function GaleriaEditor() {
     try {
       const { contentStorage } = await import('@/lib/storage');
       
-      const galeria = await contentStorage.getGaleria();
+      // Usar las imágenes actuales del estado (que pueden incluir las por defecto)
       const maxId = galeria.length > 0 
         ? Math.max(...galeria.map(i => i.id)) 
         : 0;
@@ -67,6 +96,8 @@ export default function GaleriaEditor() {
       };
       
       const updatedGaleria = [...galeria, newImage];
+      
+      // Guardar en localStorage (esto marca que el usuario ha comenzado a gestionar el portafolio)
       const result = await contentStorage.saveGaleria(updatedGaleria);
 
       if (result.success) {
@@ -96,9 +127,10 @@ export default function GaleriaEditor() {
     try {
       const { contentStorage } = await import('@/lib/storage');
       
-      const galeria = await contentStorage.getGaleria();
+      // Usar las imágenes actuales del estado (que pueden incluir las por defecto)
       const updatedGaleria = galeria.filter(i => i.id !== id);
       
+      // Guardar en localStorage (incluso si queda vacío, para marcar que el usuario ha interactuado)
       const result = await contentStorage.saveGaleria(updatedGaleria);
 
       if (result.success) {
