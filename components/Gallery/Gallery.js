@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { FaPlay, FaTimes } from 'react-icons/fa';
 import { getAllGalleryImages } from '@/config/images';
+import { contentStorage } from '@/lib/storage';
 import styles from './Gallery.module.css';
 
 const Gallery = () => {
@@ -12,6 +13,8 @@ const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = [
     { id: 'todos', name: 'Todos' },
@@ -22,7 +25,54 @@ const Gallery = () => {
     { id: 'graduaciones', name: 'Graduaciones' }
   ];
 
-  const galleryItems = getAllGalleryImages();
+  useEffect(() => {
+    loadGallery();
+  }, []);
+
+  // Sincronizar cambios
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleContentUpdate = (event) => {
+      if (event.detail.type === 'galeria') {
+        loadGallery();
+      }
+    };
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'content:galeria') {
+        loadGallery();
+      }
+    };
+
+    window.addEventListener('contentUpdated', handleContentUpdate);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('contentUpdated', handleContentUpdate);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const loadGallery = async () => {
+    try {
+      const data = await contentStorage.getGaleria();
+      // Si no hay datos guardados, usar las imágenes por defecto
+      if (data && data.length > 0) {
+        setGalleryItems(data);
+      } else {
+        // Combinar con imágenes por defecto
+        const defaultImages = getAllGalleryImages();
+        setGalleryItems(defaultImages);
+      }
+    } catch (error) {
+      console.error('Error loading gallery:', error);
+      // Fallback a imágenes por defecto
+      setGalleryItems(getAllGalleryImages());
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredItems = selectedCategory === 'todos' 
     ? galleryItems 
@@ -64,6 +114,16 @@ const Gallery = () => {
       setSelectedImage(filteredItems[prevIndex]);
     }
   };
+
+  if (loading) {
+    return (
+      <section id="galeria" className={`${styles.gallery} section`}>
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>Cargando galería...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="galeria" className={`${styles.gallery} section`}>

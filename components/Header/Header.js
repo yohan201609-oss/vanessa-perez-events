@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes, FaPhone, FaWhatsapp, FaInstagram } from 'react-icons/fa';
-import { getWhatsAppUrl, getInstagramUrl } from '@/config/socialLinks';
+import { getWhatsAppUrl, getInstagramUrl, socialLinks } from '@/config/socialLinks';
+import { contentStorage } from '@/lib/storage';
 import styles from './Header.module.css';
 import Image from 'next/image';
 
@@ -11,6 +12,39 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('inicio');
+  const [contactConfig, setContactConfig] = useState({
+    whatsapp: socialLinks.whatsapp.number,
+    instagram: socialLinks.instagram
+  });
+
+  useEffect(() => {
+    loadContactConfig();
+    
+    // Escuchar cambios en la configuración
+    if (typeof window !== 'undefined') {
+      const handleContentUpdate = (event) => {
+        if (event.detail && event.detail.type === 'config') {
+          loadContactConfig();
+        }
+      };
+
+      const handleStorageChange = (e) => {
+        if (e.key === 'content:config') {
+          loadContactConfig();
+        }
+      };
+
+      window.addEventListener('contentUpdated', handleContentUpdate);
+      window.addEventListener('storage', handleStorageChange);
+
+      return () => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('contentUpdated', handleContentUpdate);
+          window.removeEventListener('storage', handleStorageChange);
+        }
+      };
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +72,18 @@ const Header = () => {
       }
     };
   }, []);
+
+  const loadContactConfig = async () => {
+    try {
+      const config = await contentStorage.getConfig();
+      setContactConfig({
+        whatsapp: config.whatsapp ? config.whatsapp.replace(/[\s()\-+]/g, '') : socialLinks.whatsapp.number,
+        instagram: config.instagram || socialLinks.instagram
+      });
+    } catch (error) {
+      console.error('Error loading contact config:', error);
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -118,7 +164,7 @@ const Header = () => {
           {/* Contact Icons */}
           <div className={styles.contactIcons}>
             <motion.a 
-              href={getWhatsAppUrl()}
+              href={`https://wa.me/${contactConfig.whatsapp}?text=${encodeURIComponent('¡Hola! Me interesa conocer más sobre sus servicios de eventos. ¿Podrían ayudarme?')}`}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.iconLink}
@@ -129,7 +175,7 @@ const Header = () => {
               <FaWhatsapp />
             </motion.a>
             <motion.a 
-              href={getInstagramUrl()}
+              href={`https://instagram.com/${contactConfig.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.iconLink}
@@ -212,10 +258,10 @@ const Header = () => {
                     Consulta Rápida
                   </motion.button>
                   <div className={styles.mobileSocialLinks}>
-                    <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <a href={`https://wa.me/${contactConfig.whatsapp}?text=${encodeURIComponent('¡Hola! Me interesa conocer más sobre sus servicios de eventos. ¿Podrían ayudarme?')}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                       <FaWhatsapp />
                     </a>
-                    <a href={getInstagramUrl()} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <a href={`https://instagram.com/${contactConfig.instagram}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                       <FaInstagram />
                     </a>
                   </div>

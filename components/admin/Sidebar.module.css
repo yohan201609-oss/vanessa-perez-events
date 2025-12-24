@@ -1,0 +1,150 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.open {
+  width: 260px;
+}
+
+.sidebar.closed {
+  width: 80px;
+}
+
+.sidebarHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar.closed .logo {
+  display: none;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.toggleBtn:hover {
+  color: #d4af37;
+}
+
+.rotated {
+  transform: rotate(180deg);
+}
+
+.nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: #666;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  margin: 0.25rem 0;
+}
+
+.navItem:hover {
+  background: #f8f8f8;
+  color: #d4af37;
+}
+
+.navItem.active {
+  background: #fffbf0;
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.navIcon {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.closed .navText {
+  display: none;
+}
+
+.sidebar.closed .navIcon {
+  margin-right: 0;
+}
+
+.sidebarFooter {
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.logoutBtn:hover {
+  background: #d32f2f;
+}
+
+.sidebar.closed .logoutBtn span {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar.open {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .sidebar.closed {
+    width: 60px;
+  }
+}
+

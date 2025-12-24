@@ -68,6 +68,8 @@ export const metadata = {
   },
 };
 
+import ConditionalLayout from '@/components/ConditionalLayout';
+
 export default function RootLayout({ children }) {
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
@@ -92,10 +94,7 @@ export default function RootLayout({ children }) {
             </Script>
           </>
         )}
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );

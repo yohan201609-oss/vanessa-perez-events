@@ -1,14 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaWhatsapp, FaInstagram } from 'react-icons/fa';
 import analytics from '@/utils/analytics';
 import { getInstagramUrl, getWhatsAppUrl, socialLinks } from '@/config/socialLinks';
+import { contentStorage } from '@/lib/storage';
 import styles from './Contact.module.css';
 
 const Contact = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [contactConfig, setContactConfig] = useState({
+    email: socialLinks.email,
+    telefono: '+1 (555) 123-4567',
+    location: 'Ciudad, Estado, País',
+    whatsapp: socialLinks.whatsapp.number,
+    instagram: socialLinks.instagram
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +30,50 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  useEffect(() => {
+    loadContactConfig();
+    
+    // Escuchar cambios en la configuración
+    if (typeof window !== 'undefined') {
+      const handleContentUpdate = (event) => {
+        if (event.detail && event.detail.type === 'config') {
+          loadContactConfig();
+        }
+      };
+
+      const handleStorageChange = (e) => {
+        if (e.key === 'content:config') {
+          loadContactConfig();
+        }
+      };
+
+      window.addEventListener('contentUpdated', handleContentUpdate);
+      window.addEventListener('storage', handleStorageChange);
+
+      return () => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('contentUpdated', handleContentUpdate);
+          window.removeEventListener('storage', handleStorageChange);
+        }
+      };
+    }
+  }, []);
+
+  const loadContactConfig = async () => {
+    try {
+      const config = await contentStorage.getConfig();
+      setContactConfig({
+        email: config.email || socialLinks.email,
+        telefono: config.telefono || '+1 (555) 123-4567',
+        location: config.location || 'Ciudad, Estado, País',
+        whatsapp: config.whatsapp || socialLinks.whatsapp.number,
+        instagram: config.instagram || socialLinks.instagram
+      });
+    } catch (error) {
+      console.error('Error loading contact config:', error);
+    }
+  };
 
   const eventTypes = [
     'Boda',
@@ -411,7 +463,7 @@ const Contact = () => {
               <FaEnvelope className={styles.infoIcon} />
               <div>
                 <h4>Email</h4>
-                <p>{socialLinks.email}</p>
+                <p>{contactConfig.email}</p>
               </div>
             </div>
 
@@ -419,7 +471,7 @@ const Contact = () => {
               <FaPhone className={styles.infoIcon} />
               <div>
                 <h4>Teléfono</h4>
-                <p>+1 (555) 123-4567</p>
+                <p>{contactConfig.telefono}</p>
               </div>
             </div>
 
@@ -427,21 +479,21 @@ const Contact = () => {
               <FaMapMarkerAlt className={styles.infoIcon} />
               <div>
                 <h4>Ubicación</h4>
-                <p>Ciudad, Estado, País</p>
+                <p>{contactConfig.location}</p>
               </div>
             </div>
 
             <div className={styles.socialContact}>
               <h4>Síguenos</h4>
               <div className={styles.socialLinks}>
-                <a href={getInstagramUrl()} target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram">
-                  <FaInstagram />
-                  Instagram
-                </a>
-                <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" aria-label="Contáctanos por WhatsApp">
-                  <FaWhatsapp />
-                  WhatsApp
-                </a>
+              <a href={`https://instagram.com/${contactConfig.instagram}`} target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram">
+                <FaInstagram />
+                Instagram
+              </a>
+              <a href={`https://wa.me/${contactConfig.whatsapp.replace(/[\s()\-+]/g, '')}?text=${encodeURIComponent('¡Hola! Me interesa conocer más sobre sus servicios de eventos. ¿Podrían ayudarme?')}`} target="_blank" rel="noopener noreferrer" aria-label="Contáctanos por WhatsApp">
+                <FaWhatsapp />
+                WhatsApp
+              </a>
               </div>
             </div>
 
@@ -449,7 +501,7 @@ const Contact = () => {
               <h4>¿Necesitas una respuesta rápida?</h4>
               <p>Contáctanos directamente por WhatsApp para una respuesta inmediata.</p>
               <a 
-                href={getWhatsAppUrl()} 
+                href={`https://wa.me/${contactConfig.whatsapp.replace(/[\s()\-+]/g, '')}?text=${encodeURIComponent('¡Hola! Me interesa conocer más sobre sus servicios de eventos. ¿Podrían ayudarme?')}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn btn-primary"

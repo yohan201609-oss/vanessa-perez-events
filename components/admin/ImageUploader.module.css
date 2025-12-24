@@ -1,0 +1,125 @@
+.uploader {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  border: 2px dashed #d0d0d0;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  color: #666;
+}
+
+.uploadArea:hover {
+  border-color: #d4af37;
+  background: #fffbf0;
+  color: #d4af37;
+}
+
+.uploadArea svg {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.uploadArea span {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.uploadArea small {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 2rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.preview {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+  background: #fff;
+}
+
+.preview img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.removeBtn:hover {
+  background: #d32f2f;
+  transform: scale(1.1);
+}
+
+.uploadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  gap: 1rem;
+}
+
+.error {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+

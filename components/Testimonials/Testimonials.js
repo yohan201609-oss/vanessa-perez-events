@@ -5,13 +5,52 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import OptimizedImage from '@/components/OptimizedImage/OptimizedImage';
 import { images } from '@/config/images';
+import { contentStorage } from '@/lib/storage';
 import styles from './Testimonials.module.css';
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const testimonials = [
+  useEffect(() => {
+    loadTestimonials();
+  }, []);
+
+  // Sincronizar cambios
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleContentUpdate = (event) => {
+      if (event.detail.type === 'testimonios') {
+        loadTestimonials();
+      }
+    };
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'content:testimonios') {
+        loadTestimonials();
+      }
+    };
+
+    window.addEventListener('contentUpdated', handleContentUpdate);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('contentUpdated', handleContentUpdate);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const loadTestimonials = async () => {
+    try {
+      const data = await contentStorage.getTestimonios();
+      setTestimonials(data);
+    } catch (error) {
+      console.error('Error loading testimonials:', error);
+      // Valores por defecto
+      const defaultTestimonials = [
     {
       id: 1,
       name: 'María González',
@@ -57,10 +96,15 @@ const Testimonials = () => {
       image: images.testimonials[4].image,
       date: 'Septiembre 2023'
     }
-  ];
+      ];
+      setTestimonials(defaultTestimonials);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || testimonials.length === 0) return;
     
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => 
@@ -98,6 +142,16 @@ const Testimonials = () => {
       />
     ));
   };
+
+  if (loading || testimonials.length === 0) {
+    return (
+      <section id="testimonios" className={`${styles.testimonials} section`}>
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>Cargando testimonios...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="testimonios" className={`${styles.testimonials} section`}>

@@ -1,20 +1,74 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaHeart, FaBriefcase, FaGraduationCap, FaBaby, FaCalendarAlt } from 'react-icons/fa';
 import { images } from '@/config/images';
+import { contentStorage } from '@/lib/storage';
 import styles from './Services.module.css';
+
+const iconMap = {
+  FaHeart,
+  FaBaby,
+  FaBriefcase,
+  FaCalendarAlt,
+  FaGraduationCap
+};
 
 const Services = () => {
   const [activeService, setActiveService] = useState(0);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const services = [
-    {
-      id: 1,
-      title: 'Bodas',
-      icon: FaHeart,
+  useEffect(() => {
+    loadServices();
+    
+    // Sincronizar cambios
+    if (typeof window === 'undefined') return;
+
+    const handleContentUpdate = (event) => {
+      if (event.detail && event.detail.type === 'servicios') {
+        console.log('Servicios content updated, reloading...');
+        loadServices();
+      }
+    };
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'content:servicios') {
+        console.log('Servicios storage changed, reloading...');
+        loadServices();
+      }
+    };
+
+    window.addEventListener('contentUpdated', handleContentUpdate);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('contentUpdated', handleContentUpdate);
+        window.removeEventListener('storage', handleStorageChange);
+      }
+    };
+  }, []);
+
+  const loadServices = async () => {
+    try {
+      const data = await contentStorage.getServicios();
+      // Convertir iconos string a componentes
+      const servicesWithIcons = data.map(service => ({
+        ...service,
+        icon: iconMap[service.icon] || FaHeart
+      }));
+      setServices(servicesWithIcons);
+    } catch (error) {
+      console.error('Error loading services:', error);
+      // Valores por defecto
+      const defaultServices = [
+        {
+          id: 1,
+          title: 'Bodas',
+          icon: 'FaHeart',
       description: 'Creamos la boda de tus sueños con cada detalle perfectamente planificado. Desde la coordinación del día hasta la decoración elegante.',
       features: [
         'Planificación completa del evento',
@@ -28,7 +82,7 @@ const Services = () => {
     {
       id: 2,
       title: 'Baby Showers',
-      icon: FaBaby,
+      icon: 'FaBaby',
       description: 'Celebra la llegada del bebé con un evento especial lleno de amor, juegos y momentos únicos.',
       features: [
         'Decoración temática adorable',
@@ -42,7 +96,7 @@ const Services = () => {
     {
       id: 3,
       title: 'Eventos Corporativos',
-      icon: FaBriefcase,
+      icon: 'FaBriefcase',
       description: 'Eventos empresariales profesionales que dejan una impresión duradera. Conferencias, galas y reuniones corporativas.',
       features: [
         'Planificación estratégica',
@@ -56,7 +110,7 @@ const Services = () => {
     {
       id: 4,
       title: 'Eventos Especiales',
-      icon: FaCalendarAlt,
+      icon: 'FaCalendarAlt',
       description: 'Cualquier celebración especial merece ser memorable. Aniversarios, despedidas, inauguraciones y más.',
       features: [
         'Diseño personalizado',
@@ -70,7 +124,7 @@ const Services = () => {
     {
       id: 5,
       title: 'Graduaciones',
-      icon: FaGraduationCap,
+      icon: 'FaGraduationCap',
       description: 'Celebra los logros académicos con eventos memorables que honran el esfuerzo y dedicación de los graduados.',
       features: [
         'Decoración temática elegante',
@@ -81,7 +135,26 @@ const Services = () => {
       ],
       image: images.services.graduaciones
     }
-  ];
+      ];
+      const servicesWithIcons = defaultServices.map(service => ({
+        ...service,
+        icon: iconMap[service.icon] || FaHeart
+      }));
+      setServices(servicesWithIcons);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading || services.length === 0) {
+    return (
+      <section id="servicios" className={`${styles.services} section`}>
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>Cargando servicios...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="servicios" className={`${styles.services} section`}>
