@@ -1,11 +1,8 @@
 [build]
   # Command to build Next.js app
   command = "npm run build"
-  
-  # Next.js build output directory
-  publish = ".next"
 
-# Next.js plugin configuration
+# Next.js plugin - maneja automáticamente el build y deploy
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
@@ -24,7 +21,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-# Cache static assets
+# Cache static assets from Next.js
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
