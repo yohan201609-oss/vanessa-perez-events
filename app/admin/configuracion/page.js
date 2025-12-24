@@ -11,9 +11,16 @@ export default function ConfiguracionEditor() {
     telefono: '',
     location: ''
   });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const [message, setMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   useEffect(() => {
     loadConfig();
@@ -47,6 +54,66 @@ export default function ConfiguracionEditor() {
       setMessage('❌ Error al guardar configuración');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setChangingPassword(true);
+    setPasswordMessage('');
+
+    // Validaciones
+    if (passwordData.newPassword.length < 6) {
+      setPasswordMessage('❌ La nueva contraseña debe tener al menos 6 caracteres');
+      setChangingPassword(false);
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMessage('❌ Las contraseñas no coinciden');
+      setChangingPassword(false);
+      return;
+    }
+
+    try {
+      // Obtener el hash actual para enviarlo al servidor
+      const { getPasswordHash } = await import('@/lib/auth');
+      const currentPasswordHash = getPasswordHash();
+
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+          currentPasswordHash: currentPasswordHash
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.passwordHash) {
+        // Guardar el hash de la nueva contraseña en localStorage
+        const { savePasswordHash } = await import('@/lib/auth');
+        await savePasswordHash(data.passwordHash);
+        
+        setPasswordMessage('✅ Contraseña cambiada exitosamente');
+        setPasswordData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        });
+        setTimeout(() => setPasswordMessage(''), 5000);
+      } else {
+        setPasswordMessage(data.message || '❌ Error al cambiar contraseña');
+      }
+    } catch (error) {
+      console.error('Error changing password:', error);
+      setPasswordMessage('❌ Error de conexión. Por favor intenta nuevamente.');
+    } finally {
+      setChangingPassword(false);
     }
   };
 
@@ -156,6 +223,69 @@ export default function ConfiguracionEditor() {
           </p>
         </div>
       </form>
+
+      <div className={styles.passwordSection}>
+        <h2>Cambiar Contraseña del Admin</h2>
+        
+        <form onSubmit={handlePasswordChange} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="currentPassword">Contraseña Actual</label>
+            <input
+              id="currentPassword"
+              type="password"
+              value={passwordData.currentPassword}
+              onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+              required
+              placeholder="Ingresa tu contraseña actual"
+              disabled={changingPassword}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="newPassword">Nueva Contraseña</label>
+            <input
+              id="newPassword"
+              type="password"
+              value={passwordData.newPassword}
+              onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+              required
+              placeholder="Mínimo 6 caracteres"
+              minLength={6}
+              disabled={changingPassword}
+            />
+            <small>La contraseña debe tener al menos 6 caracteres</small>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="confirmPassword">Confirmar Nueva Contraseña</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={passwordData.confirmPassword}
+              onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+              required
+              placeholder="Confirma tu nueva contraseña"
+              disabled={changingPassword}
+            />
+          </div>
+
+          {passwordMessage && (
+            <div className={`${styles.message} ${passwordMessage.includes('✅') ? styles.success : styles.error}`}>
+              {passwordMessage}
+            </div>
+          )}
+
+          <div className={styles.actions}>
+            <button 
+              type="submit" 
+              className={styles.saveBtn}
+              disabled={changingPassword}
+            >
+              {changingPassword ? 'Cambiando contraseña...' : 'Cambiar Contraseña'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

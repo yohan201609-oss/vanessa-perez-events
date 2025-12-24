@@ -41,7 +41,7 @@ Todas las secciones del panel admin están funcionando correctamente y guardan l
 
 ## 🔐 Credenciales de Acceso
 
-- **Email:** `admin@vanessaperez.com`
+- **Email:** `vanessaperezeventsplanner@gmail.com`
 - **Contraseña:** `admin123`
 - **URL Login:** `/admin/login`
 

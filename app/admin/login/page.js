@@ -25,10 +25,20 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Obtener hash de contraseña personalizada si existe
+      let customPasswordHash = null;
+      if (typeof window !== 'undefined') {
+        customPasswordHash = localStorage.getItem('admin-password-hash');
+      }
+
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ 
+          email, 
+          password,
+          customPasswordHash: customPasswordHash || undefined
+        }),
       });
 
       const data = await res.json();
@@ -65,7 +75,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="admin@vanessaperez.com"
+              placeholder="vanessaperezeventsplanner@gmail.com"
               disabled={loading}
             />
           </div>
@@ -93,12 +103,6 @@ export default function LoginPage() {
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
-
-        <div className={styles.loginFooter}>
-          <p>Credenciales por defecto:</p>
-          <p><strong>Email:</strong> admin@vanessaperez.com</p>
-          <p><strong>Password:</strong> admin123</p>
-        </div>
       </div>
     </div>
   );

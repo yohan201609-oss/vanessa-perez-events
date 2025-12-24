@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, customPasswordHash } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -13,7 +13,30 @@ export async function POST(request) {
       );
     }
 
-    const result = await verifyLogin(email, password);
+    // Si el cliente envía un hash de contraseña personalizada, verificar contra ese hash primero
+    let result;
+    if (customPasswordHash) {
+      // Verificar contra la contraseña personalizada
+      const bcrypt = (await import('bcryptjs')).default;
+      const isValid = await bcrypt.compare(password, customPasswordHash);
+      
+      if (isValid) {
+        // Contraseña personalizada correcta, generar token
+        const jwt = (await import('jsonwebtoken')).default;
+        const token = jwt.sign(
+          { email },
+          process.env.JWT_SECRET || 'tu-secret-key-cambiar-en-produccion',
+          { expiresIn: '7d' }
+        );
+        result = { success: true, user: { email }, token };
+      } else {
+        // Intentar con contraseña por defecto
+        result = await verifyLogin(email, password);
+      }
+    } else {
+      // Verificar contra contraseña por defecto
+      result = await verifyLogin(email, password);
+    }
 
     if (!result.success) {
       return NextResponse.json(
