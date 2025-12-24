@@ -1,6 +1,52 @@
-# Vanessa Perez Event Planner - Next.js 14
+# 🎉 Vanessa Perez - Event Planner Website
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yohan201609-oss/vanessa-perez-events)
 
 Sitio web profesional de planificación de eventos migrado a Next.js 14 con App Router.
+
+## 🚀 Deploy en Vercel
+
+### Opción 1: Deploy Automático (Recomendado)
+1. Haz fork de este repositorio
+2. Ve a [vercel.com](https://vercel.com)
+3. Click en **"New Project"**
+4. Importa tu repositorio
+5. Configura las variables de entorno (ver abajo)
+6. Click en **"Deploy"**
+
+### Opción 2: Deploy con CLI
+```bash
+npm i -g vercel
+vercel login
+vercel
+```
+
+### 🔧 Variables de Entorno en Vercel
+
+Configura estas variables en **Vercel Dashboard** → **Settings** → **Environment Variables**:
+
+#### Variables del Servidor (sin NEXT_PUBLIC_)
+- `EMAILJS_SERVICE_ID` - Tu Service ID de EmailJS
+- `EMAILJS_TEMPLATE_ID` - Tu Template ID de EmailJS
+- `EMAILJS_PUBLIC_KEY` - Tu Public Key de EmailJS
+
+#### Variables Públicas (con NEXT_PUBLIC_)
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Tu ID de Google Analytics
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` - Número de WhatsApp
+- `NEXT_PUBLIC_INSTAGRAM_USERNAME` - Usuario de Instagram
+- `NEXT_PUBLIC_EMAIL` - Email de contacto
+- `NEXT_PUBLIC_PHONE` - Teléfono de contacto
+- `NEXT_PUBLIC_LOCATION` - Ubicación
+- `NEXT_PUBLIC_WEBSITE_URL` - URL del sitio
+- `NEXT_PUBLIC_SITE_URL` - URL del sitio
+
+**Importante:** Marca todas las variables para **Production**, **Preview**, y **Development**.
+
+### 🌐 URL de Producción
+
+El sitio estará disponible en: `https://vanessa-perez-events.vercel.app`
+
+Para más detalles, consulta [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ## 🚀 Características
 
