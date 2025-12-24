@@ -15,7 +15,7 @@ export async function POST(request) {
 
     // Si el cliente envía un hash de contraseña personalizada, verificar contra ese hash primero
     let result;
-    if (customPasswordHash) {
+    if (customPasswordHash && customPasswordHash.trim() !== '') {
       // Verificar contra la contraseña personalizada
       const bcrypt = (await import('bcryptjs')).default;
       const isValid = await bcrypt.compare(password, customPasswordHash);
@@ -30,11 +30,11 @@ export async function POST(request) {
         );
         result = { success: true, user: { email }, token };
       } else {
-        // Intentar con contraseña por defecto
+        // Contraseña personalizada incorrecta, intentar con contraseña por defecto
         result = await verifyLogin(email, password);
       }
     } else {
-      // Verificar contra contraseña por defecto
+      // No hay contraseña personalizada, verificar contra contraseña por defecto
       result = await verifyLogin(email, password);
     }
 
