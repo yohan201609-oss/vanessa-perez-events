@@ -1,9 +1,16 @@
 // Configuración de enlaces de redes sociales
 // Usa variables de entorno si están disponibles, sino usa valores por defecto
 
+// Función para limpiar el número de WhatsApp (remover espacios, paréntesis, guiones y +)
+const cleanWhatsAppNumber = (number) => {
+  if (!number) return '1234567890';
+  // Remover espacios, paréntesis, guiones y el símbolo +
+  return number.replace(/[\s()\-+]/g, '');
+};
+
 export const socialLinks = {
   whatsapp: {
-    number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '1234567890',
+    number: cleanWhatsAppNumber(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '1234567890'),
     message: '¡Hola! Me interesa conocer más sobre sus servicios de eventos. ¿Podrían ayudarme?',
     quickMessages: {
       quote: 'Hola, me interesa cotizar un evento',
