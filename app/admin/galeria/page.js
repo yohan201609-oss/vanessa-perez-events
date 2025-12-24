@@ -138,13 +138,13 @@ export default function GaleriaEditor() {
   };
 
   if (loading) {
-    return <div className={styles.loading}>Cargando galería...</div>;
+    return <div className={styles.loading}>Cargando portafolio...</div>;
   }
 
   return (
     <div className={styles.editor}>
       <div className={styles.header}>
-        <h1>Gestionar Galería</h1>
+        <h1>Gestionar Portafolio</h1>
         <button 
           className={styles.addBtn}
           onClick={() => {
@@ -164,7 +164,7 @@ export default function GaleriaEditor() {
 
       {showForm && (
         <div className={styles.formContainer}>
-          <h2>Agregar Imagen a la Galería</h2>
+          <h2>Agregar Imagen al Portafolio</h2>
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
               <ImageUploader
@@ -221,11 +221,11 @@ export default function GaleriaEditor() {
       )}
 
       <div className={styles.galeriaList}>
-        <h2>Galería ({galeria.length} imágenes)</h2>
+        <h2>Portafolio ({galeria.length} imágenes)</h2>
         
         {galeria.length === 0 ? (
           <div className={styles.emptyState}>
-            <p>No hay imágenes en la galería. Agrega tu primera imagen.</p>
+            <p>No hay imágenes en el portafolio. Agrega tu primera imagen.</p>
           </div>
         ) : (
           <div className={styles.galeriaGrid}>

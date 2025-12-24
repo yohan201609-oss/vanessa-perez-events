@@ -67,7 +67,7 @@ export default function AdminDashboard() {
       color: '#4CAF50'
     },
     {
-      title: 'Galería',
+      title: 'Portafolio',
       description: `${stats.galeria} imágenes`,
       icon: <FaImages />,
       href: '/admin/galeria',

@@ -37,7 +37,7 @@ export default function Sidebar({ isOpen, onToggle, currentPath, onLogout }) {
       color: '#4CAF50'
     },
     {
-      title: 'Galería',
+      title: 'Portafolio',
       href: '/admin/galeria',
       icon: <FaImages />,
       color: '#2196F3'
